@@ -8,13 +8,6 @@
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Self-Study-52/Mysql-Learn.git"
-  },
-  "bugs": {
-    "url": "https://github.com/Self-Study-52/Mysql-Learn/issues"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
