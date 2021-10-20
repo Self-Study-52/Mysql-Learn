@@ -1,8 +1,8 @@
 const sidebar = [
   {
-    text: "Mysql 简介",
+    text: "Mysql",
     collapsable: false,
-    children: ["/guide/00.Mysql简介/Mysql简介.md"],
+    children: ["/guide/00.Mysql/Mysql简介.md"],
   },
 ];
 
