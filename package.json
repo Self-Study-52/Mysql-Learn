@@ -1,0 +1,24 @@
+{
+  "name": "vue-press",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/Self-Study-52/NodeJs#readme",
+  "main": "index.js",
+  "scripts": {
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Self-Study-52/NodeJs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Self-Study-52/NodeJs/issues"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "vuepress": "^2.0.0-beta.26"
+  }
+}
