@@ -2,7 +2,7 @@
   "name": "vue-press",
   "version": "1.0.0",
   "description": "",
-  "homepage": "https://github.com/Self-Study-52/Mysql-Learn.git#readme",
+  "homepage": "https://github.com/Self-Study-52/Mysql-Learn#readme",
   "main": "index.js",
   "scripts": {
     "docs:dev": "vuepress dev docs",
