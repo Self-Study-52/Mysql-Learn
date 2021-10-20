@@ -4,7 +4,7 @@ title: Home
 heroImage: /mysql.png
 actions:
   - text: 快速上手 →
-    link: /guide/00.Mysql/
+    link: /guide/Mysql/
     type: primary
   - text: 仓库简介
     link: /guide/
