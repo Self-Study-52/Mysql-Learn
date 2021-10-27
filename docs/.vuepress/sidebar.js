@@ -24,7 +24,9 @@ const sidebar = [
       "/guide/Mysql/第十九章：跟新和删除数据.md",
       "/guide/Mysql/第二十章：创建和操纵表.md",
       "/guide/Mysql/第二十一章：Mysql 视图.md",
+      "/guide/Mysql/第二十二章：Mysql 存储过程.md",
       "/guide/Mysql/附录A：sql模板.md",
+      "/guide/Mysql/附录B：Mysql数据类型.md",
     ],
   },
 ];
