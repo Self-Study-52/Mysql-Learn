@@ -50,13 +50,13 @@ WHERE c.cust_id = o.cust_id
 AND oi.order_num = o.order_num;
 ~~~
 
-![image-20211025092422083](./img/image-20211025092422083.png)
+![image-20211025092422083](https://gitee.com/sue201982/mysql/raw/master/img/202110292226852.png)
 
 ~~~mysql
 SHOW CREATE VIEW productcustomers;
 ~~~
 
-![image-20211025092446816](./img/image-20211025092446816.png)
+![image-20211025092446816](https://gitee.com/sue201982/mysql/raw/master/img/202110292226853.png)
 
 CREATE VIEW 中的内容：
 
@@ -86,7 +86,7 @@ FROM vendors v
 ORDER BY vend_name;
 ~~~
 
-![image-20211025093443020](./img/image-20211025093443020.png)
+![image-20211025093443020](https://gitee.com/sue201982/mysql/raw/master/img/202110292226854.png)
 
 现在，假如经常需要这个格式的结果。不必在每次需要时执行联结，创建一个视图，每次需要时使用它即可。
 
@@ -98,7 +98,7 @@ FROM vendors v
 ORDER BY vend_name;
 ~~~
 
-![image-20211025093616624](./img/image-20211025093616624.png)
+![image-20211025093616624](https://gitee.com/sue201982/mysql/raw/master/img/202110292226855.png)
 
 过滤视图添加 WHERE 关键字进行判断
 

@@ -128,7 +128,7 @@ SELECT @getMessage; -- Product Added
 
 > BEFORE或AFTER？ 通常，将BEFORE用于数据验证和净化（目的是保证插入表中的数据确实是需要的数据）。本提示也适用于UPDATE触发器。
 
-![image-20211029104320270](./img/image-20211029104320270.png)
+![image-20211029104320270](https://gitee.com/sue201982/mysql/raw/master/img/202110292225933.png)
 
 ### DELETE 触发器
 
@@ -161,7 +161,7 @@ DELETE FROM products WHERE prod_id = 'XCE04';
 SELECT @getDeleteMessage; -- Product Deleted
 ~~~
 
-![image-20211029105943307](./img/image-20211029105943307.png)
+![image-20211029105943307](https://gitee.com/sue201982/mysql/raw/master/img/202110292225934.png)
 
 ### INSERT 触发器
 
@@ -212,7 +212,7 @@ SELECT @getMessage; -- Product Added
 
 > BEFORE或AFTER？ 通常，将BEFORE用于数据验证和净化（目的是保证插入表中的数据确实是需要的数据）。本提示也适用于UPDATE触发器。
 
-![image-20211029104320270](./img/image-20211029104320270.png)
+![image-20211029104320270](https://gitee.com/sue201982/mysql/raw/master/img/202110292225933.png)
 
 
 ### Update 触发器
@@ -246,7 +246,7 @@ UPDATE products SET vend_id = '1002' WHERE prod_id = 'XCE05';
 SELECT @getUpdateMessage; -- Product Deleted
 ~~~
 
-![image-20211029110542828](./img/image-20211029110542828.png)
+![image-20211029110542828](https://gitee.com/sue201982/mysql/raw/master/img/202110292225935.png)
 
 ## 进一步介绍
 

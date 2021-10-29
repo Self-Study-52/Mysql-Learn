@@ -28,7 +28,7 @@ select 列名1，列名2... from 表名;
 
 通过给定的多个 列名... 进行检索
 
-![image-20211013195213117](./img/image-20211013195213117.png)
+![image-20211013195213117](https://gitee.com/sue201982/mysql/raw/master/img/202110292227928.png)
 
 
 ## 检索所有列表数据
@@ -39,7 +39,7 @@ select * from 表名;
 
 如果给定一个通配符（*），则返回表中所有列。列的顺序一般是列在表定义中出现的顺序。但有时候并不是这样的，表的模式的变化（如添加或删除列）可能会导致顺序的变化。
 
-![image-20211013195736139](./img/image-20211013195736139.png)
+![image-20211013195736139](https://gitee.com/sue201982/mysql/raw/master/img/202110292227929.png)
 
 
 ## 检索不同的行数据（去重）
@@ -50,7 +50,7 @@ select * from 表名;
 select type from cities;
 ~~~
 
-![image-20211013200243176](./img/image-20211013200243176.png)
+![image-20211013200243176](https://gitee.com/sue201982/mysql/raw/master/img/202110292227930.png)
 
 上图我们发现了有许多重复的数据，这是我们不想要看到的
 
@@ -58,7 +58,7 @@ select type from cities;
 select distinct type from cities;
 ~~~
 
-![image-20211013200353438](./img/image-20211013200353438.png)
+![image-20211013200353438](https://gitee.com/sue201982/mysql/raw/master/img/202110292227931.png)
 
 DISTINCT关键字应用于所有列而不仅是前置它的列。如果给出SELECT DISTINCT type, code，除非指定的两个列都不同，否则所有行都将被
 检索出来。
@@ -72,4 +72,4 @@ select 表名.列名 from 数据库名.表名
 
 将语法限定在只用**该数据库下的这个表中的列才能获取**
 
-![image-20211013200705559](./img/image-20211013200705559.png)
+![image-20211013200705559](https://gitee.com/sue201982/mysql/raw/master/img/202110292227932.png)

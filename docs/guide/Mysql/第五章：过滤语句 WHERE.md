@@ -33,7 +33,7 @@ lang: en-US
 SELECT XXX FROM XXX WHERE 列名 操作符 值
 ~~~
 
-![image-20211014211522217](./img/image-20211014211522217.png)
+![image-20211014211522217](https://gitee.com/sue201982/mysql/raw/master/img/202110292230486.png)
 
 
 ## 不匹配检查
@@ -42,7 +42,7 @@ SELECT XXX FROM XXX WHERE 列名 操作符 值
 SELECT XXX FROM XXX WHERE 列名 <> 值
 ~~~
 
-![image-20211014211937641](./img/image-20211014211937641.png)
+![image-20211014211937641](https://gitee.com/sue201982/mysql/raw/master/img/202110292230487.png)
 
 > 所查到的数据中没有了 id 为 330 的数据
 
@@ -56,7 +56,7 @@ SELECT XXX FROM XXX WHERE 列名 <> 值
 SELECT XXX FROM XXX WHERE 列名 BETWEEN 值 AND 值;
 ~~~
 
-![image-20211014212311865](./img/image-20211014212311865.png)
+![image-20211014212311865](https://gitee.com/sue201982/mysql/raw/master/img/202110292230488.png)
 
 在使用BETWEEN时，必须指定两个值——所需范围的低端值和高端值。这两个值必须用AND关键字分隔。BETWEEN匹配范围中所有的值，包括指定的开始值和结束值。
 
@@ -70,7 +70,7 @@ SELECT XXX FROM XXX WHERE 列名 BETWEEN 值 AND 值;
 SELECT XXX FROM XXX WHERE 列名 IS NULL;
 ~~~
 
-![image-20211014212938364](./img/image-20211014212938364.png)
+![image-20211014212938364](https://gitee.com/sue201982/mysql/raw/master/img/202110292230489.png)
 
 在通过过滤选择出不具有特定值的行时，你可能希望返回具有NULL值的行。但是，不行。因为未知具有特殊的含义，数据库不知道它们是否匹配，所以在匹配过滤或不匹配过滤时不返回它们。 
 

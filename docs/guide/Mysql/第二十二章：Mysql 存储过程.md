@@ -153,7 +153,7 @@ END
 
 - 然后，选择你所在的`database`点击存储过程 
 
-![image-20211027171017065](./img/image-20211027171017065.png)
+![image-20211027171017065](https://gitee.com/sue201982/mysql/raw/master/img/202110292225541.png)
 
 - 最后，会生成一段SQL语句，直接执行后就可以看到结果了
 
@@ -163,7 +163,7 @@ END
 
 - 运行结果，如图：
 
-![创建存储过程](./img/createStore.gif)
+![创建存储过程](https://gitee.com/sue201982/mysql/raw/master/img/202110292225542.gif)
 
 ::: details 如何在sql文件中直接书写存储过程
 
@@ -196,7 +196,7 @@ DROP PROCEDUCE/FUNCTION xxx
 DROP PROCEDURE myTry 
 ~~~
 
-![image-20211027174519517](./img/image-20211027174519517.png)
+![image-20211027174519517](https://gitee.com/sue201982/mysql/raw/master/img/202110292225543.png)
 
 > 如果指定的过程不存在，则`Drop Procedure` 将产生一个错误。当过程存在则删除。可以使用`Drop Procedure If Exists`
 
@@ -259,7 +259,7 @@ SELECT @num;
 　　在外部块中声明的变量可以在内部块中直接使用；
 　　在内部块中声明的变量只能在内部块中使用。
 
-![image-20211027210926499](./img/image-20211027210926499.png)
+![image-20211027210926499](https://gitee.com/sue201982/mysql/raw/master/img/202110292225544.png)
 
 > `@` 所声明的变量相当于在外部起到一个占位符的作用。且必须要使用 call方法进行调用后。
 
@@ -286,7 +286,7 @@ END IF;
 
 执行流程图：
 
-![img](./img/1213900-20190225173301399-907113604.png)
+![img](https://gitee.com/sue201982/mysql/raw/master/img/202110292225545.png)
 
 - **Else 双判断：**
 
@@ -304,7 +304,7 @@ END IF;
 
 流程图：
 
-![img](./img/1213900-20190225195234487-2140038727.png)
+![img](https://gitee.com/sue201982/mysql/raw/master/img/202110292225546.png)
 
 - **多条件判断：**
 
@@ -323,7 +323,7 @@ END IF;
 
 流程图：
 
-![img](./img/1213900-20190225195317751-1462561542.png)
+![img](https://gitee.com/sue201982/mysql/raw/master/img/202110292225547.png)
 
 - **案例：**
 
@@ -358,7 +358,7 @@ DELIMITER ;
 CALL mysql_scirpt.`04.CreateIF`();
 ~~~
 
-![image-20211027224447072](./img/image-20211027224447072.png)
+![image-20211027224447072](https://gitee.com/sue201982/mysql/raw/master/img/202110292225548.png)
 
 ### 传递参数
 
@@ -407,7 +407,7 @@ DELIMITER ;
 { CALL mysql_scirpt.`05.CreateParameter`(这里输入身高) }
 ~~~
 
-![image-20211028083937908](./img/image-20211028083937908.png)
+![image-20211028083937908](https://gitee.com/sue201982/mysql/raw/master/img/202110292225549.png)
 
 - **案例2：OUT 参数使用**
 
@@ -648,7 +648,7 @@ DELIMITER ;
 CALL mysql_scirpt.`10.CreateWhile`(10);
 ~~~
 
-![image-20211028093603285](./img/image-20211028093603285.png)
+![image-20211028093603285](https://gitee.com/sue201982/mysql/raw/master/img/202110292225550.png)
 
 ### repeat 循环
 
@@ -692,7 +692,7 @@ DELIMITER ;
 CALL mysql_scirpt.`11.CcreateRepeat`(10)
 ~~~
 
-![image-20211028094720133](./img/image-20211028094720133.png)
+![image-20211028094720133](https://gitee.com/sue201982/mysql/raw/master/img/202110292225551.png)
 
 ### loop 循环
 
@@ -750,7 +750,7 @@ DELIMITER ;
 CALL mysql_scirpt.`12.CreateLoopAndLeave`(10);
 ~~~
 
-![image-20211028101803523](./img/image-20211028101803523.png)
+![image-20211028101803523](https://gitee.com/sue201982/mysql/raw/master/img/202110292225552.png)
 
 ### iterate 语句
 
