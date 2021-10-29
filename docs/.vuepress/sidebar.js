@@ -26,6 +26,7 @@ const sidebar = [
       "/guide/Mysql/第二十一章：Mysql 视图.md",
       "/guide/Mysql/第二十二章：Mysql 存储过程.md",
       "/guide/Mysql/第二十三章：Mysql 触发器.md",
+      "/guide/Mysql/第二十四章：管理事务处理.md",
       "/guide/Mysql/附录A：sql模板.md",
       "/guide/Mysql/附录B：Mysql数据类型.md",
     ],
