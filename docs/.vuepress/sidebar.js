@@ -39,7 +39,7 @@ const sidebar = [
   {
     text: "《高性能Mysql》",
     collapsable: false,
-    children: ["/guide/《高性能Mysql》/第一章：Mysql简介.md"],
+    children: [],
   },
 ];
 
