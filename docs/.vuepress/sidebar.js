@@ -29,6 +29,8 @@ const sidebar = [
       "/guide/Mysql/第二十四章：管理事务处理.md",
       "/guide/Mysql/第二十五章：全球化和本地化.md",
       "/guide/Mysql/第二十六章：安全管理.md",
+      "/guide/Mysql/第二十七章：数据库维护.md",
+      "/guide/Mysql/第二十八章：改善性能.md",
       "/guide/Mysql/附录A：sql模板.md",
       "/guide/Mysql/附录B：Mysql数据类型.md",
       "/guide/Mysql/附录C：Mysql 存储过程案例.md",
