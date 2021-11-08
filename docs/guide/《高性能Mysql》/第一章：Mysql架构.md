@@ -184,3 +184,170 @@ COMMIT;
 
 ### 1.3.3 事务日志
 
+Mysql中提供的两种事务型的存储引擎：InnoDB和NDB Cluster。另外还有第三方引擎如：XtraDB和PBXT等。
+
+**<font size=5>自动提交（AUTOCOMMIT）</font>**
+
+Mysql默认采用自动提交模式。也即是说，如果不是显式的开始一个事务，则每个查询都会被当作一个事务执行提交操作。在当前连接中，可以通过设置 AUTOCOMMITE 变量来启动或禁止自动提交事务。
+
+~~~mysql
+SHOW variables LIKE 'AUTOCOMMIT';
+~~~
+
+![image-20211108170338201](https://gitee.com/sue201982/mysql/raw/master/img/202111081703241.png)
+
+1 或 ON 表示开启，0 或 OFF 表示是禁止。当AUTOCOMMIT = 0时，所有的查询都是在一个事务中，直到显示执行 COMMIT 提交或者 ROLLBACK 回滚，该事务结束，同时又开始另一个事务。
+
+修改 AUTOCOMMIT 对非事务型的表，不会有任何影响。对这类表来说，没有 COMMIT 或 ROLLBACK 的概念，可以以说是相当于一直处于 AUTOCOMMIT 启用的模式。
+
+还有一些命令再执行之前会强制执行 COMMIT 提交当前的活动事务。
+
+Mysql 可以通过执行 `SET TRANSACTION ISOLATION LEVEL` 命令来设置隔离级别。新的隔离级别会在下一个事务开始的时候生效。可以咋爱配置文件中设置整个数据库的隔离级别，也可以值改变当前会话的隔离级别：
+
+~~~mysql
+SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
+~~~
+
+![image-20211108171243057](https://gitee.com/sue201982/mysql/raw/master/img/202111081712083.png)
+
+> Mysql可以识别所有的4个隔离级别。
+
+**<font size=5>在事务中混合使用存储引擎</font>**
+
+Mysql 服务器不管理事务，事务由下层的存储引擎实现，所以在同一个事务使用不同的存储引擎并不可能。
+
+如果在事务中混合使用了事务型和非事务型，正常提交并无太大问题。但是如果事务需要回滚，非事务型的表示无法变更的，导致数据库处于不一致状态，所以每张表都需要一个合适的存储引擎。
+
+> 大多数情况非事务型表上执行事务时并不会报错，只有警告：‘某些非事务型表上的变更不能被回滚’。
+
+**<font size=5>隐式和显示锁定</font>**
+
+InnoDB采用的是两阶段锁定协议（two-placec locking protocol）。在事务执行过程中，随时都可以执行锁定，锁只有在执行COMMIT或ROLLBACK时候才会被释放，并且所有的锁都是在同一时刻被释放。InnoDB 会根据隔离级别在需要的时候自动加锁。
+
+另外，InnoDDB支持通过特定语句进行显示锁定：
+
+~~~mysql
+SELECT ... LOCK IN SHARE MODE;
+SELECT ... FOR UPDATE;
+~~~
+
+Mysql 支持 `Lock Tables` 和 `Unlock Tables` 语句，这是服务器层实现的，和存储引擎无关。但是并不能替代事务处理。如果引用需要用到事务，还是选择事务型存储引擎。
+
+> Lock tables 和事务之间互相影响的话，会使情况变得复杂，建议除了事务中仅用了AUTOCOMMIT，可以使用LOCK TABLES之外，不要使用LOCK TABLES。
+
+## 1.4 多版本并发控制
+
+Mysql的大多数事务型存储引擎都不是简单的行级锁，而是基于提升并发性能的考虑，它们一般都同时实现了多版本并发控制（MVCC）。不仅仅只是Mysql，其余的数据库系统也一样，但是各自的实现机制并不相同。
+
+可以认为MVCC是行级锁的一个变种，但是它在很多情况下避免了枷锁操作，因此开销更低。实现机制不同，但大都实现了非阻塞的读操作，写操作也只锁定必要的行。
+
+MVCC的实现，是通过保存数据在某个时间点的**快照**来实现的。也就是说，不管需要执行多久时间，每个事物看到的数据都是一致的。根据事务的开时间不同，每个事务对同一张表，同一时刻看到的数据可能是不一样的。
+
+实现方法EX:
+
+- 乐观（optimistic）并发控制
+- 悲观（pessimistic）并发控制
+
+**<font size=5>MVCC的工作原理</font>**
+
+InnoDB 的 MVCC 是通过每行记录后面保存两个隐藏的列来实现的。这两个列，一个保存了行的创建事件，一个保存行的过期时间（删除时间）。当然存储的并不是实际的时间值，而是系统版本号（System Version Number）。每开始一个新的事务，系统版本号都会自动递增。事务开始时刻的系统版本号会作为事务的版本号，用来查询到的每行记录的版本号进行比较。
+
+Ex：REPEATEABLE READ 隔离级别下，MVCC具体操作
+
+**SELECT：**
+
+InnoDB会根据以下两个条件检查每行记录：
+
+1. InnoDB 之查找版本早于当前事务版本的数据行（也就是，行的系统版本号小于或等于事物的系统版本号），这样可以确保事务读取的行，要么是在事务开始前已经存在的，要么是在事务自身插入或修改过的。
+2. 行的删除版本要么未定义，要么大于当前事务版本号。这可以确保事务读取到的行，在事务开始前未被删除。
+
+**INSERT：**
+
+InnoDB 为新插入的每一行保存当前系统版本号作为行版本号。
+
+**DELETE：**
+
+InnoDB为删除的每一行保存当前版本号作为行删除标识。
+
+**UPDATE：**
+
+InnoDB 为插入一行新纪录，保存当前系统版本号作为行版本号，同时保存当前系统版本号到原来的行所谓行删除标识符。
+
+保存这两个额外系统版本号，使大多数读操作都可以不用加锁。这样设计使得读数据操作很简单，性能很好，并且也能保证只会读取到符合标准的行。不足之处是每行记录都需要额外的存储空间，需要做更多的行检查工作，以及额外的维护工作。
+
+MVCC只在 REPEATABLE READ 和 READ COMMITTED 这两个隔离级别下工作。其他两个隔离级别斗个MVCC不兼容，因为 READ UNCOMMITTED 总是读取最新的数据行，而不是符合当前事务版本的是数据行。而SERIALIZABLE则会对所有读取的行都加锁。
+
+## 1.5 MySQL 存储引擎
+
+在文件系统中，Mysql 将每个数据库（也称schema）保存为数据目录下的一个子目录。创建表时，Mysql会在数据库子目录下创建一个和表相同名的 `.frm` 文件保存表的定义。因为Mysql使用文件系统的目录和文件夹保存数据库和表的定义，大小写敏感性和具体的平台密切相关。Window没有大小写区分。表的定义则是在Mysql服务层统一处理的。
+
+~~~
+Name|Engine|Version|Row_format|Rows|Avg_row_length|Data_length|Max_data_length|Index_length|Data_free|Auto_increment|Create_time        |Update_time|Check_time|Collation     |Checksum|Create_options|Comment|
+----+------+-------+----------+----+--------------+-----------+---------------+------------+---------+--------------+-------------------+-----------+----------+--------------+--------+--------------+-------+
+emp1|InnoDB|     10|Dynamic   |9999|           158|    1589248|              0|           0|        0|         10000|2021-11-01 16:20:53|           |          |gbk_chinese_ci|        |              |       |
+~~~
+
+通过 `SHOW TABLE STATUS` 命令显示表的相关信息。
+
+- `Name`：表名
+- `Engine`：表存储引擎类型
+- `Version`：版本
+- `Row_format`：行的格式
+- `Rows`：表中的行数，InnoDB中的值为估计值，MyISAM则是精确的
+- `Avg_row_length`：平均每行包含的字节数
+- `Data_length`：表数据的大小（以字节为单位）
+- `Max_data_legnth`：表数据的最大容量，该值和存储引擎有关
+- `Index_length`：索引的大小（以字节为单位）
+- `Data_free`：表示已分配但目前没有使用的空间。
+- `Auto_increment`：下一个 AUTO_INCREMENT 的值
+- `Create_time`：表创建的时间
+- `Update_time`：表数据最后修改时间
+- `Check_time`：使用`CHECK TABLE`命令或`myisamchk`工具最后一次检查表的时间
+- `Collation`：表的默认字符集和字符列排序规则
+- `Checksum`：如果启用，保存的是整个表的实时校验和
+- `Create_options`：创建表时指定的其他选项
+- `Comment`：该列包含了一些其他额外信息
+
+### InnoDB 存储引擎
+
+InnoDB 引擎为Mysql的默认事务型引擎，也是使用最为广泛的存储引擎。其被设计用来处理大量的短期（short-lived）事务，短期事务大部分情况是正常提交的，很少会被滚回。InnoDB的性能和自动崩溃恢复特性，使得其在非事务型存储的需求中也很流行。除非有非常特别的原因需要使用其他存储引擎，优先考虑 InnoDB 引擎。
+
+![image-20211108200349855](https://gitee.com/sue201982/mysql/raw/master/img/202111082003923.png)
+
+![image-20211108200420373](https://gitee.com/sue201982/mysql/raw/master/img/202111082004422.png)
+
+![image-20211108200438228](https://gitee.com/sue201982/mysql/raw/master/img/202111082004250.png)
+
+**<font size=5>InnoDB 概览</font>**
+
+InnoDB 的数据存储在表空间（tablespace）中，表空间是由 InnoDB 管理的黑盒子，由一系列的数据文件组成。在 Mysql 4.1 后的版本，InnoDB 可以加ing每个表的数据和索引存放在单独的文件中。InnoDB 也可以使用裸设备作为空间的存储介质，但现代的文件系统是的裸设备不再是必要的选择。
+
+InnoDB采用MVCC来支持高并发，并且实现了四个标准的隔离级别。其默认级别是 REPEATABLE READ（可重复读），并且通过**间隙锁（next-key locking）**策略防止**幻读**的出现。间隙锁使得 InnoDB 不仅仅锁定查询涉及的行，还会对索引中的间隙进行锁定，以防止**幻影行**的插入。
+
+InnoDB 表是基于**聚簇索引**建立的。InnoDB的索引结构和Mysql和其他存储引擎有很大的不同，聚簇索引对主键查询有很高的性能。不过它的二级索引（secondary index，非主键索引）中必须包含主键列，所以如果主键列很大的话，其他的索引也会很大。因此，若表上的索引较多的话，主键应当尽可能小。InnoDB 存储格式是平台独立的，也就是说可以将数据和索引文件从 Intel 平台复制到 PowerPC 或 Sun SPARC 平台。
+
+InnoDB 内部做了很多优化，包括从磁盘读取数据时采用的可预测性预读，能够自动在内存中创建hash索引以加速读操作的自适应**哈希索引（adaptive hash index）**，以及能够加速插入操作的**插入缓冲区（insert buffer）**等。
+
+InnoDB 的行为十分复杂和难以理解的。 可参考官方的**InnoDB事务模型和锁**。
+
+作为事务型存储引擎，InnoDB从过一些机制和工具支持真正的**热备份**，Mysql其他存储引擎并不支持热备份，要获取一致性视图要停止对所有表的写入，而在读写混合场景，停止写入可能也意味着停止读取。
+
+### MyISAM 存储引擎
+
+在 Mysql 5.1 之前的版本，MyISAM为默认的存储引擎。MyISAM 提供了大量的特性，包括全局索引、压缩、空间函数（GIS）等，但 MyISAM 不支持事务和行级锁，而且有一个缺陷就是系统崩溃后无法安全恢复。正是因为 MyISAM引擎的缘故，即使Mysql支持了事务很久但是却无法使用。
+
+MyISAM 对于只读的数据，或表较小、可以忍受修复（repair）操作，则依然可以继续使用 MyISAM。
+
+**<font size=5>存储</font>**
+
+MyISAM 会将表存储在两个文件中：
+
+- 数据文件
+- 索引文件
+
+分别以：`.MYD` 和 `.MYI` 为扩展名。MyISAM 表可以包含动态或静态（长度固定）行。Mysql 会根据表的定义来决定采取何种行格式。MyISAM表可以存储的行记录数，一般受限于可用磁盘空间，或者操作系统中单个文件的最大尺寸。
+
+在Mysql 5.0 中，MyISAM 表如果是变长行，则默认配置处理356TB的数据，因为指向数据记录的指针长度为 6个字节。可以通过表的MAX_ROWS或AVG_ROW_LENGTH选项值来实现，两者相乘就是表可能达到的最大大小。修改这两个参数会导致重建整个表和索引。
+
+**<font size=5>MyISAM 特性</font>**
+
