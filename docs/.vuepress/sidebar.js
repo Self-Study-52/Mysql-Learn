@@ -42,6 +42,7 @@ const sidebar = [
     children: [
       "/guide/《高性能Mysql》/第一章：Mysql架构.md",
       "/guide/《高性能Mysql》/第二章：MySQL基准测试.md",
+      "/guide/《高性能Mysql》/附录A-Mysql关键词理解.md",
     ],
   },
 ];
