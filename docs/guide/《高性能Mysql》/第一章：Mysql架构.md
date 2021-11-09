@@ -413,7 +413,7 @@ Merge引擎是`MyISAM`引擎的一个变种。Merge表是由多个`MyISAM`表合
 
 ### 1.5.4 第三方存储引擎
 
-![image-20211109173230957](https://i.loli.net/2021/11/09/5I2kyBh4mFCSN9Q.png)
+![image-20211109173230957](https://gitee.com/sue201982/mysql/raw/master/5I2kyBh4mFCSN9Q.png)
 
 **<font size=5>面向列的存储引擎</font>**
 
