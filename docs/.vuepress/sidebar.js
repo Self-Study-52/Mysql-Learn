@@ -41,8 +41,9 @@ const sidebar = [
     collapsable: false,
     children: [
       "/guide/《高性能Mysql》/第一章：Mysql架构.md",
-      "/guide/《高性能Mysql》/第二章：MySQL基准测试.md",
+      "/guide/《高性能Mysql》/第二章：服务器性能刨析.md",
       "/guide/《高性能Mysql》/附录A-Mysql关键词理解.md",
+      "/guide/《高性能Mysql》/附录B-Mysql的索引数据结构详解.md",
     ],
   },
 ];
